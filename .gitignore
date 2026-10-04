@@ -1,0 +1,14 @@
+# Environment & Credentials
+.env
+.env.local
+
+# Vendor & Temp
+/vendor/
+/tmp/
+*.log
+
+# OS & Editor Files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

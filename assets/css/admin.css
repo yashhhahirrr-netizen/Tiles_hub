@@ -1,0 +1,156 @@
+/* assets/css/admin.css - TilePoint Admin Panel Styles */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --admin-sidebar-w: 260px;
+    --admin-bg: #F4F6F8;
+    --admin-sidebar-bg: #1A1D20;
+    --admin-card: #FFFFFF;
+    --admin-primary: #2C3E50;
+    --admin-accent: #C86D51;
+    --admin-border: #E2E8F0;
+    --admin-text: #334155;
+    --admin-text-muted: #64748B;
+}
+
+body.admin-body {
+    background-color: var(--admin-bg);
+    color: var(--admin-text);
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    min-height: 100vh;
+}
+
+.admin-sidebar {
+    width: var(--admin-sidebar-w);
+    background: var(--admin-sidebar-bg);
+    color: #FFFFFF;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+}
+
+.admin-brand {
+    padding: 24px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #FFFFFF;
+}
+
+.admin-nav {
+    padding: 20px 0;
+    list-style: none;
+    flex-grow: 1;
+}
+
+.admin-nav a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 24px;
+    color: #94A3B8;
+    font-size: 0.925rem;
+    transition: all 0.2s ease;
+}
+
+.admin-nav a:hover, .admin-nav a.active {
+    background: rgba(255, 255, 255, 0.08);
+    color: #FFFFFF;
+    border-left: 4px solid var(--admin-accent);
+}
+
+.admin-main {
+    margin-left: var(--admin-sidebar-w);
+    flex-grow: 1;
+    padding: 32px 40px;
+}
+
+.admin-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--admin-border);
+}
+
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    margin-bottom: 36px;
+}
+
+.stat-card {
+    background: var(--admin-card);
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--admin-border);
+}
+
+.stat-card .num {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--admin-primary);
+    margin: 8px 0 4px;
+}
+
+.admin-table-wrap {
+    background: var(--admin-card);
+    border-radius: 8px;
+    border: 1px solid var(--admin-border);
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.admin-table th, .admin-table td {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--admin-border);
+    font-size: 0.9rem;
+}
+
+.admin-table th {
+    background: #F8FAFC;
+    font-weight: 600;
+    color: var(--admin-text-muted);
+}
+
+.admin-table tr:hover {
+    background: #F8FAFC;
+}
+
+.badge-status {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge-status.paid, .badge-status.delivered, .badge-status.active, .badge-status.approved {
+    background: #DCFCE7;
+    color: #15803D;
+}
+
+.badge-status.pending, .badge-status.submitted {
+    background: #FEF9C3;
+    color: #A16207;
+}
+
+.badge-status.cancelled, .badge-status.failed, .badge-status.rejected {
+    background: #FEE2E2;
+    color: #B91C1C;
+}
