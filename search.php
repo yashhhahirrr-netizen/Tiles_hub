@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // search.php
 // Database-Backed Tile Search
 
@@ -15,19 +15,19 @@ if (!empty($query)) {
                           FROM products p
                           JOIN categories c ON p.category_id = c.id
                           WHERE p.status = 'active' AND (
-                              p.name LIKE :q OR
-                              p.sku LIKE :q OR
-                              p.description LIKE :q OR
-                              p.brand LIKE :q OR
-                              p.tile_type LIKE :q OR
-                              p.material LIKE :q OR
-                              p.finish LIKE :q OR
-                              p.color LIKE :q OR
-                              p.size LIKE :q OR
-                              c.name LIKE :q
+                              p.name LIKE ? OR
+                              p.sku LIKE ? OR
+                              p.description LIKE ? OR
+                              p.brand LIKE ? OR
+                              p.tile_type LIKE ? OR
+                              p.material LIKE ? OR
+                              p.finish LIKE ? OR
+                              p.color LIKE ? OR
+                              p.size LIKE ? OR
+                              c.name LIKE ?
                           )
                           ORDER BY p.name ASC");
-    $stmt->execute([':q' => $searchKey]);
+    $stmt->execute(array_fill(0, 10, $searchKey));
     $tiles = $stmt->fetchAll();
 }
 ?>
@@ -75,3 +75,4 @@ if (!empty($query)) {
 </div>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
+
