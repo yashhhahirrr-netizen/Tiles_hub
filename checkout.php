@@ -12,7 +12,6 @@ if (empty($totals['items'])) {
     exit;
 }
 
-require_once __DIR__ . '/includes/header.php';
 
 
 $currentUser = getLoggedInUser();
@@ -177,6 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+require_once __DIR__ . '/includes/header.php';
 ?>
 
 <div class="container section-padding">
@@ -341,3 +341,4 @@ function switchAddressTab(mode) {
 </script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
+
