@@ -1,9 +1,8 @@
-<?php
+﻿<?php
 // register.php
 // Customer Registration Page
 
-require_once __DIR__ . '/includes/header.php';
-require_once __DIR__ . '/includes/auth.php';
+require_once __DIR__ . '/config/app.php';
 
 if (isLoggedIn()) {
     header("Location: " . BASE_URL . "/account.php");
@@ -13,11 +12,11 @@ if (isLoggedIn()) {
 $error = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $fullName = trim($_POST['full_name'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $phone = trim($_POST['phone'] ?? '');
-    $password = $_POST['password'] ?? '';
-    $confirmPassword = $_POST['confirm_password'] ?? '';
+    $fullName       = trim($_POST['full_name']       ?? '');
+    $email          = trim($_POST['email']           ?? '');
+    $phone          = trim($_POST['phone']           ?? '');
+    $password       =      $_POST['password']        ?? '';
+    $confirmPassword =     $_POST['confirm_password'] ?? '';
 
     if (empty($fullName) || empty($email) || empty($password)) {
         $error = "Please fill in all required fields.";
@@ -28,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($password !== $confirmPassword) {
         $error = "Passwords do not match.";
     } else {
-        $db = getDBConnection();
+        $db   = getDBConnection();
         $stmt = $db->prepare("SELECT id FROM users WHERE email = ?");
         $stmt->execute([$email]);
         if ($stmt->fetch()) {
@@ -38,13 +37,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $db->prepare("INSERT INTO users (full_name, email, phone, password, status) VALUES (?, ?, ?, ?, 'active')");
             $stmt->execute([$fullName, $email, $phone, $hash]);
             $userId = $db->lastInsertId();
-
             loginUser(['id' => $userId, 'full_name' => $fullName, 'email' => $email]);
             header("Location: " . BASE_URL . "/account.php");
             exit;
         }
     }
 }
+
+require_once __DIR__ . '/includes/header.php';
 ?>
 
 <div class="container section-padding">
@@ -59,31 +59,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
 
         <form action="<?php echo BASE_URL; ?>/register.php" method="POST">
+            <?php echo renderCSRFField(); ?>
             <div class="form-group">
                 <label class="form-label">Full Name</label>
-                <input type="text" name="full_name" class="form-control" placeholder="Rahul Sharma" required>
+                <input type="text" name="full_name" class="form-control" placeholder="Rahul Sharma" required
+                       value="<?php echo htmlspecialchars($_POST['full_name'] ?? ''); ?>">
             </div>
-
             <div class="form-group">
                 <label class="form-label">Email Address</label>
-                <input type="email" name="email" class="form-control" placeholder="customer@example.com" required>
+                <input type="email" name="email" class="form-control" placeholder="customer@example.com" required
+                       value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>">
             </div>
-
             <div class="form-group">
                 <label class="form-label">Phone Number</label>
-                <input type="tel" name="phone" class="form-control" placeholder="9876543210">
+                <input type="tel" name="phone" class="form-control" placeholder="9876543210"
+                       value="<?php echo htmlspecialchars($_POST['phone'] ?? ''); ?>">
             </div>
-
             <div class="form-group">
                 <label class="form-label">Password</label>
                 <input type="password" name="password" class="form-control" placeholder="At least 6 characters" required>
             </div>
-
             <div class="form-group">
                 <label class="form-label">Confirm Password</label>
                 <input type="password" name="confirm_password" class="form-control" placeholder="Repeat password" required>
             </div>
-
             <button type="submit" class="btn btn-primary btn-lg btn-block">Create Account</button>
         </form>
 

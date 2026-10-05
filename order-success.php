@@ -1,11 +1,24 @@
-<?php
+﻿<?php
 // order-success.php
 // Order Confirmation & Invoice Action Center
 
-require_once __DIR__ . '/includes/header.php';
-require_once __DIR__ . '/includes/auth.php';
-
+require_once __DIR__ . '/config/app.php';
 requireLogin('order-success.php');
+
+// Load order & validate BEFORE any HTML output
+$orderId = (int)($_GET['order_id'] ?? 0);
+$dbEarly = getDBConnection();
+$currentUser = getLoggedInUser();
+$stmtCheck = $dbEarly->prepare('SELECT id FROM orders WHERE id = ? AND user_id = ?');
+$stmtCheck->execute([$orderId, $currentUser['id']]);
+if (!$stmtCheck->fetch()) {
+    header('Location: ' . BASE_URL . '/account.php');
+    exit;
+}
+unset($stmtCheck, $dbEarly);
+
+require_once __DIR__ . '/includes/header.php';
+
 
 $orderId = (int)($_GET['order_id'] ?? 0);
 $db = getDBConnection();
@@ -30,7 +43,7 @@ $orderItems = $stmt->fetchAll();
 
 <div class="container section-padding">
     <div style="max-width: 800px; margin: 0 auto; background: var(--color-card); padding: 48px; border-radius: var(--radius-lg); border: 1px solid var(--color-border); box-shadow: var(--shadow-md); text-align: center;">
-        <div style="width: 70px; height: 70px; background: #DCFCE7; color: #15803D; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; margin: 0 auto 20px;">✓</div>
+        <div style="width: 70px; height: 70px; background: #DCFCE7; color: #15803D; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; margin: 0 auto 20px;">âœ“</div>
         <span class="eyebrow" style="color: var(--color-success);">Order Successfully Confirmed</span>
         <h1 class="font-heading" style="margin-bottom: 12px;">Thank You For Your Order!</h1>
         <p style="color: var(--color-text-muted); font-size: 1.05rem; margin-bottom: 32px;">
@@ -63,7 +76,7 @@ $orderItems = $stmt->fetchAll();
                                 <strong><?php echo htmlspecialchars($item['product_name']); ?></strong>
                                 <div style="font-size: 0.78rem; color: var(--color-text-muted);">SKU: <?php echo htmlspecialchars($item['sku']); ?></div>
                             </td>
-                            <td><?php echo htmlspecialchars($item['size']); ?> — <?php echo htmlspecialchars($item['finish']); ?></td>
+                            <td><?php echo htmlspecialchars($item['size']); ?> â€” <?php echo htmlspecialchars($item['finish']); ?></td>
                             <td><?php echo $item['boxes']; ?> Boxes</td>
                             <td><?php echo $item['coverage']; ?> sq. ft.</td>
                             <td><strong><?php echo formatPrice($item['total']); ?></strong></td>

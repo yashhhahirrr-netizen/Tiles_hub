@@ -1,6 +1,15 @@
-<?php
+﻿<?php
 // cart.php
 // Tile Shopping Cart & Box Coverage Summary
+
+require_once __DIR__ . '/config/app.php';
+
+// Redirect to login if not authenticated, then come back to cart
+if (!isLoggedIn()) {
+    $_SESSION['redirect_after_login'] = BASE_URL . '/cart.php';
+    header('Location: ' . BASE_URL . '/login.php');
+    exit;
+}
 
 require_once __DIR__ . '/includes/header.php';
 
@@ -66,7 +75,7 @@ $totals = getCartTotals($_SESSION['coupon_code'] ?? null);
                                 <td><?php echo round($item['coverage_per_box'] * $item['boxes'], 2); ?> sq. ft.</td>
                                 <td><strong id="item-total-<?php echo $item['item_id']; ?>"><?php echo formatPrice($itemTotal); ?></strong></td>
                                 <td>
-                                    <button class="icon-btn js-remove-cart-item" data-item-id="<?php echo $item['item_id']; ?>" style="color: var(--color-danger);" title="Remove">✕</button>
+                                    <button class="icon-btn js-remove-cart-item" data-item-id="<?php echo $item['item_id']; ?>" style="color: var(--color-danger);" title="Remove">âœ•</button>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

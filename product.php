@@ -1,8 +1,8 @@
-<?php
+﻿<?php
 // product.php
 // Tile Product Details & Architectural Specification Page
 
-require_once __DIR__ . '/includes/header.php';
+require_once __DIR__ . '/config/app.php';
 
 $productId = (int)($_GET['id'] ?? 0);
 $db = getDBConnection();
@@ -41,6 +41,8 @@ $relatedTiles = $stmt->fetchAll();
 $effectivePrice = (!empty($tile['discount_price']) && $tile['discount_price'] > 0) ? $tile['discount_price'] : $tile['price'];
 $boxPrice = getBoxPrice($effectivePrice, $tile['coverage_per_box']);
 ?>
+
+<?php require_once __DIR__ . '/includes/header.php'; ?>
 
 <div class="container section-padding">
     <!-- Breadcrumb -->
@@ -118,7 +120,7 @@ $boxPrice = getBoxPrice($effectivePrice, $tile['coverage_per_box']);
 
                 <div style="display: flex; gap: 12px;">
                     <button type="submit" class="btn btn-primary btn-lg" style="flex: 2;">Add To Cart</button>
-                    <button type="button" class="btn btn-outline btn-lg js-wishlist-toggle <?php echo isInWishlist($_SESSION['user_id'] ?? null, $tile['id']) ? 'active' : ''; ?>" data-product-id="<?php echo $tile['id']; ?>" style="flex: 1;">♥ Wishlist</button>
+                    <button type="button" class="btn btn-outline btn-lg js-wishlist-toggle <?php echo isInWishlist($_SESSION['user_id'] ?? null, $tile['id']) ? 'active' : ''; ?>" data-product-id="<?php echo $tile['id']; ?>" style="flex: 1;">â™¥ Wishlist</button>
                 </div>
             </form>
 
@@ -143,7 +145,7 @@ $boxPrice = getBoxPrice($effectivePrice, $tile['coverage_per_box']);
                     <tr><td style="font-weight: 600;">Tile Type & Category</td><td><?php echo htmlspecialchars($tile['tile_type']); ?> (<?php echo htmlspecialchars($tile['category_name']); ?>)</td></tr>
                     <tr><td style="font-weight: 600;">Body Material</td><td><?php echo htmlspecialchars($tile['material']); ?></td></tr>
                     <tr><td style="font-weight: 600;">Surface Finish</td><td><?php echo htmlspecialchars($tile['finish']); ?> (<?php echo htmlspecialchars($tile['surface']); ?>)</td></tr>
-                    <tr><td style="font-weight: 600;">Color & Pattern</td><td><?php echo htmlspecialchars($tile['color']); ?> — <?php echo htmlspecialchars($tile['pattern']); ?></td></tr>
+                    <tr><td style="font-weight: 600;">Color & Pattern</td><td><?php echo htmlspecialchars($tile['color']); ?> â€” <?php echo htmlspecialchars($tile['pattern']); ?></td></tr>
                     <tr><td style="font-weight: 600;">Tile Dimensions</td><td><?php echo htmlspecialchars($tile['size']); ?> (Thickness: <?php echo htmlspecialchars($tile['thickness']); ?>)</td></tr>
                     <tr><td style="font-weight: 600;">Water Absorption</td><td><?php echo htmlspecialchars($tile['water_absorption']); ?></td></tr>
                     <tr><td style="font-weight: 600;">Breaking Strength</td><td><?php echo htmlspecialchars($tile['strength']); ?></td></tr>
@@ -167,7 +169,7 @@ $boxPrice = getBoxPrice($effectivePrice, $tile['coverage_per_box']);
                     <div style="background: var(--color-card); padding: 20px; border-radius: var(--radius-md); border: 1px solid var(--color-border);">
                         <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                             <strong><?php echo htmlspecialchars($rev['full_name']); ?></strong>
-                            <span style="color: var(--color-gold); font-size: 1.1rem;"><?php echo str_repeat('★', $rev['rating']); ?></span>
+                            <span style="color: var(--color-gold); font-size: 1.1rem;"><?php echo str_repeat('â˜…', $rev['rating']); ?></span>
                         </div>
                         <p style="font-size: 0.9rem; color: var(--color-text-main);"><?php echo htmlspecialchars($rev['review_text']); ?></p>
                         <span style="font-size: 0.75rem; color: var(--color-text-light); margin-top: 8px; display: block;"><?php echo date('M d, Y', strtotime($rev['created_at'])); ?></span>

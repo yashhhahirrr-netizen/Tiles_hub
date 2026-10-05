@@ -1,12 +1,25 @@
-<?php
+﻿<?php
 // payment.php
 // Online Payment Gateway Interface & Server-Side Verification
 
+require_once __DIR__ . '/config/app.php';
+requireLogin('payment.php');
+
+// Load order & validate BEFORE any HTML output
+$orderId = (int)($_GET['order_id'] ?? 0);
+$dbEarly = getDBConnection();
+$currentUser = getLoggedInUser();
+$stmtCheck = $dbEarly->prepare('SELECT id FROM orders WHERE id = ? AND user_id = ?');
+$stmtCheck->execute([$orderId, $currentUser['id']]);
+if (!$stmtCheck->fetch()) {
+    header('Location: ' . BASE_URL . '/account.php');
+    exit;
+}
+unset($stmtCheck, $dbEarly);
+
 require_once __DIR__ . '/includes/header.php';
-require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/config/payment.php';
 
-requireLogin('payment.php');
 
 $orderId = (int)($_GET['order_id'] ?? 0);
 $db = getDBConnection();

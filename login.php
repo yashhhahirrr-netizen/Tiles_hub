@@ -1,9 +1,8 @@
-<?php
+﻿<?php
 // login.php
 // Customer Authentication & Login Page
 
-require_once __DIR__ . '/includes/header.php';
-require_once __DIR__ . '/includes/auth.php';
+require_once __DIR__ . '/config/app.php';
 
 if (isLoggedIn()) {
     header("Location: " . BASE_URL . "/account.php");
@@ -13,22 +12,26 @@ if (isLoggedIn()) {
 $error = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = trim($_POST['email'] ?? '');
-    $password = $_POST['password'] ?? '';
+    $email    = trim($_POST['email']    ?? '');
+    $password =      $_POST['password'] ?? '';
 
-    $db = getDBConnection();
+    $db   = getDBConnection();
     $stmt = $db->prepare("SELECT * FROM users WHERE email = ? AND status = 'active'");
     $stmt->execute([$email]);
     $user = $stmt->fetch();
 
     if ($user && password_verify($password, $user['password'])) {
         loginUser($user);
-        header("Location: " . BASE_URL . "/account.php");
+        $redirect = $_SESSION['redirect_after_login'] ?? BASE_URL . '/account.php';
+        unset($_SESSION['redirect_after_login']);
+        header("Location: " . $redirect);
         exit;
     } else {
         $error = "Invalid email address or password.";
     }
 }
+
+require_once __DIR__ . '/includes/header.php';
 ?>
 
 <div class="container section-padding">
@@ -43,9 +46,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
 
         <form action="<?php echo BASE_URL; ?>/login.php" method="POST">
+            <?php echo renderCSRFField(); ?>
             <div class="form-group">
                 <label class="form-label">Email Address</label>
-                <input type="email" name="email" class="form-control" placeholder="customer@example.com" required>
+                <input type="email" name="email" class="form-control" placeholder="customer@example.com" required
+                       value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>">
             </div>
 
             <div class="form-group">

@@ -6,6 +6,9 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Output buffering allows header() calls even after partial output
+if (!ob_get_level()) { ob_start(); }
+
 define('APP_NAME', 'TilePoint');
 define('APP_TAGLINE', 'PREMIUM TILES & SURFACES');
 
@@ -30,3 +33,5 @@ define('FREE_SHIPPING_THRESHOLD', 25000.00);
 require_once __DIR__ . '/database.php';
 require_once __DIR__ . '/../includes/csrf.php';
 require_once __DIR__ . '/../includes/functions.php';
+require_once __DIR__ . '/../includes/auth.php';
+require_once __DIR__ . '/../includes/admin-auth.php';

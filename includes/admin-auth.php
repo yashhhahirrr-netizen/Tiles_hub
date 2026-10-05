@@ -2,10 +2,6 @@
 // includes/admin-auth.php
 // Admin Panel Authentication Helper Functions
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
 function isAdminLoggedIn() {
     return isset($_SESSION['admin_id']) && !empty($_SESSION['admin_id']);
 }

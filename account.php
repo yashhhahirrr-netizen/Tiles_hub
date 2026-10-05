@@ -1,11 +1,19 @@
-<?php
+﻿<?php
 // account.php
 // Customer Dashboard & Profile Management
 
-require_once __DIR__ . '/includes/header.php';
-require_once __DIR__ . '/includes/auth.php';
-
+require_once __DIR__ . '/config/app.php';
 requireLogin('account.php');
+
+// Handle logout BEFORE any HTML output
+if (trim($_GET['action'] ?? '') === 'logout') {
+    logoutUser();
+    header('Location: ' . BASE_URL . '/login.php');
+    exit;
+}
+
+require_once __DIR__ . '/includes/header.php';
+
 
 $currentUser = getLoggedInUser();
 $db = getDBConnection();
